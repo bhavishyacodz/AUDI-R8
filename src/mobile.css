@@ -1,0 +1,99 @@
+/* Android / small-screen ergonomics and safe-area support */
+@supports (height: 100dvh) {
+  html, body, #root, .app-shell { height: 100dvh; }
+}
+
+@media (max-width: 760px), (pointer: coarse) {
+  html, body, #root { min-height: 100%; }
+  body { overscroll-behavior: none; }
+  .app-shell { min-height: 100%; }
+  .overlay {
+    padding:
+      max(12px, env(safe-area-inset-top))
+      max(12px, env(safe-area-inset-right))
+      max(10px, env(safe-area-inset-bottom))
+      max(12px, env(safe-area-inset-left));
+  }
+  .topbar { gap: 8px; }
+  .brand { gap: 9px; min-width: 0; }
+  .brand-mark { flex: 0 0 38px; }
+  .brand > div:last-child { min-width: 0; }
+  .brand h1 { white-space: nowrap; }
+  .subline { max-width: 52vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .top-actions { flex: 0 0 auto; }
+  .glass-button, .engine-active, .tilt-active { min-height: 40px; }
+  .control-deck { width: 100%; max-width: 680px; margin-bottom: 4px; }
+  .camera-row {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 9px;
+  }
+  .camera-row > .control-label { display: none; }
+  .view-tabs {
+    order: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    width: 100%;
+    gap: 3px;
+  }
+  .view-tabs button { min-width: 0; min-height: 40px; padding: 8px 2px; font-size: 8px; letter-spacing: 0; }
+  .quick-actions {
+    position: static;
+    order: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+  }
+  .quick-actions button { min-width: 42px; min-height: 40px; }
+  .finish-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 12px;
+    padding: 12px;
+  }
+  .finish-row .swatch-group { min-width: 0; }
+  .finish-row .vertical-rule { display: none; }
+  .swatches, .lighting-options { flex-wrap: wrap; gap: 7px; }
+  .swatch { width: 25px; height: 25px; }
+  .selection-name { max-width: 100%; }
+  .lighting-group {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 8px;
+    padding-top: 10px;
+    border-top: 1px solid #ffffff1c;
+  }
+  .lighting-group .control-label { grid-column: 1; }
+  .lighting-group .lighting-options { grid-column: 2; grid-row: 1 / span 2; }
+  .lighting-group .selection-name { grid-column: 1; }
+  .lighting-option { min-width: 40px; min-height: 40px; }
+  .mobile-hint { margin-top: 4px; font-size: 9px; }
+  .spec-modal { width: min(540px, 100%); max-height: calc(100dvh - 28px); padding: 22px 18px; }
+}
+
+@media (max-width: 390px) {
+  .overlay { padding-left: 10px; padding-right: 10px; }
+  .brand-mark { flex-basis: 34px; width: 34px; height: 34px; }
+  .eyebrow { font-size: 7px; letter-spacing: 1px; }
+  .brand h1 { font-size: 15px; }
+  .subline { font-size: 8px; }
+  .glass-button.specs-trigger { min-width: 40px; padding: 8px; font-size: 0; }
+  .glass-button.specs-trigger svg { width: 17px; height: 17px; }
+  .finish-row { gap: 9px; padding: 10px; }
+  .swatch { width: 22px; height: 22px; }
+  .view-tabs button { font-size: 7px; }
+  .quick-actions button { padding: 8px; }
+}
+
+@media (max-height: 700px) and (max-width: 760px) {
+  .overlay { padding-top: max(8px, env(safe-area-inset-top)); }
+  .control-deck { gap: 6px; }
+  .camera-row { padding: 7px; gap: 6px; }
+  .finish-row { padding: 9px; gap: 8px; }
+  .mobile-hint { display: none; }
+}
