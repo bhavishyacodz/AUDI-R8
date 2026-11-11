@@ -1,18 +1,7 @@
-# Preview visibility correction
+# Second visibility correction
 
-## Report
-The previous preview used a near-black app shell, near-black overlay controls, and three dark environment presets. This made the configurator appear black and reduced visibility on mobile screens.
-
-## Changes
-- Changed the default environment to a bright neutral studio.
-- Added brighter studio/softbox/warm studio lighting presets and neutral backgrounds.
-- Added a light, high-contrast interface palette for controls, labels, buttons and spec modal.
-- Kept paint and wheel swatches, controls and model interactions intact.
-- Applied the palette through the stylesheet loaded after the original theme.
-
-## QA still required
-- Confirm actual car visibility and material response in Android Chrome.
-- Check all three environment presets and all six paint colors.
-- Check desktop and 320–430px mobile widths.
-- Confirm there is no WebGL context failure or shader compile error.
-- This correction is a Preview-only change; do not merge to main until inspected.
+- The prior light override did not comprehensively override all original dark-theme selectors.
+- Replaced it with authoritative high-specificity light palette rules using !important for the page shell, controls, typography and modal.
+- Rebuilt scene lighting with a fixed light neutral studio background, hemisphere/ambient illumination and three directional studio lights.
+- Lighting preset selection remains available in the UI, but this baseline ensures the car is not rendered against a near-black environment.
+- Preview build success is not visual QA. Verify actual Android Chrome rendering before closing this issue.

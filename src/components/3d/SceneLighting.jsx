@@ -1,1 +1,25 @@
-import React from 'react';export default function SceneLighting({preset}){return <><color attach="background" args={[preset.bg]}/><fog attach="fog" args={[preset.fog,7,24]}/><ambientLight intensity={.42}/><spotLight position={[0,7,1]} angle={.7} penumbra={1} intensity={preset.keyIntensity*2.2} color={preset.keyColor} castShadow shadow-mapSize={[1024,1024]}/><directionalLight position={[5,5,4]} intensity={preset.keyIntensity*.7} color={preset.keyColor}/><directionalLight position={[-6,3,-5]} intensity={preset.rimIntensity} color={preset.rimColor}/><mesh rotation={[-Math.PI/2,0,0]} position={[0,-.015,0]} receiveShadow><planeGeometry args={[60,60]}/><meshStandardMaterial color={preset.bg} roughness={preset.groundRoughness} metalness={.55}/></mesh></>}
+import React from 'react';
+
+export default function SceneLighting({ preset }) {
+  return (
+    <>
+      <color attach="background" args={['#e8edf2']} />
+      <fog attach="fog" args={['#e8edf2', 18, 42]} />
+      <hemisphereLight args={['#ffffff', '#9ba8b6', 1.65]} />
+      <ambientLight intensity={1.15} />
+      <directionalLight
+        position={[5, 8, 6]}
+        intensity={2.4}
+        color="#ffffff"
+        castShadow
+        shadow-mapSize={[1024, 1024]}
+      />
+      <directionalLight position={[-6, 4, -5]} intensity={1.8} color="#dcecff" />
+      <directionalLight position={[0, 3, 5]} intensity={1.1} color="#fff0dc" />
+      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.015, 0]} receiveShadow>
+        <planeGeometry args={[60, 60]} />
+        <meshStandardMaterial color="#cbd5df" roughness={0.82} metalness={0.04} />
+      </mesh>
+    </>
+  );
+}
