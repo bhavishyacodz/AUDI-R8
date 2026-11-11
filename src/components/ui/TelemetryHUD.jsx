@@ -1,1 +1,10 @@
-import React,{useEffect,useState} from 'react';import {Activity,Layers,Cpu} from 'lucide-react';export default function TelemetryHUD(){const [fps,setFps]=useState(0);useEffect(()=>{let n=0,last=performance.now(),raf,active=true;const tick=t=>{if(!active)return;n++;if(t-last>=750){setFps(Math.round(n*1000/(t-last)));n=0;last=t;}raf=requestAnimationFrame(tick);};raf=requestAnimationFrame(tick);return()=>{active=false;cancelAnimationFrame(raf);};},[]);return <div className="telemetry"><span><Activity size={13}/>{fps||'—'} FPS</span><i/><span><Layers size={13}/>3D SCENE</span><i/><span><Cpu size={13}/>WEBGL</span></div>;}
+import React from 'react';
+import {Activity,Layers,Cpu} from 'lucide-react';
+
+export default function TelemetryHUD() {
+  return <div className="telemetry" aria-label="Configurator status">
+    <span><Activity size={13}/>INTERACTIVE</span><i/>
+    <span><Layers size={13}/>3D SCENE</span><i/>
+    <span><Cpu size={13}/>WEBGL</span>
+  </div>;
+}
