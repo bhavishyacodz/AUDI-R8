@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { CarPaintShaderMaterial } from '../../shaders/carPaintShader';
 import { sound } from '../../utils/audioEngine';
 
 function createBodyGeometry() {
@@ -124,10 +123,9 @@ export default function AudiR8Model({
   const root = useRef();
   const { pointer } = useThree();
 
-  const shader = useMemo(() => new THREE.ShaderMaterial({
-    uniforms: THREE.UniformsUtils.clone(CarPaintShaderMaterial.uniforms),
-    vertexShader: CarPaintShaderMaterial.vertexShader,
-    fragmentShader: CarPaintShaderMaterial.fragmentShader,
+  const bodyMaterial = useMemo(() => new THREE.MeshPhysicalMaterial({
+    color: paint.hex, metalness: 0.72, roughness: paint.roughness,
+    clearcoat: paint.clearcoat, clearcoatRoughness: 0.08,
   }), []);
 
   const bodyGeometry = useMemo(createBodyGeometry, []);
@@ -137,25 +135,22 @@ export default function AudiR8Model({
   const headlightGeometry = useMemo(createHeadlightGeometry, []);
 
   useEffect(() => () => {
-    shader.dispose();
+    bodyMaterial.dispose();
     bodyGeometry.dispose();
     canopyGeometry.dispose();
     bladeGeometry.dispose();
     grilleGeometry.dispose();
     headlightGeometry.dispose();
-  }, [shader, bodyGeometry, canopyGeometry, bladeGeometry, grilleGeometry, headlightGeometry]);
+  }, [bodyMaterial, bodyGeometry, canopyGeometry, bladeGeometry, grilleGeometry, headlightGeometry]);
 
   useFrame((_, delta) => {
     if (root.current) {
       root.current.rotation.x = THREE.MathUtils.damp(root.current.rotation.x, isTiltActive ? -pointer.y * 0.025 : 0, 5, delta);
       root.current.rotation.y = THREE.MathUtils.damp(root.current.rotation.y, isTiltActive ? pointer.x * 0.04 : 0, 5, delta);
     }
-    shader.uniforms.uBaseColor.value.set(paint.hex);
-    shader.uniforms.uFlakeIntensity.value = paint.flakeIntensity;
-    shader.uniforms.uRoughness.value = paint.roughness;
-    shader.uniforms.uClearcoat.value = paint.clearcoat;
-    shader.uniforms.uRimColor.value.set(lighting.rimColor);
-    shader.uniforms.uTime.value += delta;
+    bodyMaterial.color.set(paint.hex);
+    bodyMaterial.roughness = paint.roughness;
+    bodyMaterial.clearcoat = paint.clearcoat;
     if (leftDoor.current) leftDoor.current.rotation.y = THREE.MathUtils.damp(leftDoor.current.rotation.y, doorsOpen ? -0.68 : 0, 7, delta);
     if (rightDoor.current) rightDoor.current.rotation.y = THREE.MathUtils.damp(rightDoor.current.rotation.y, doorsOpen ? 0.68 : 0, 7, delta);
     if (wing.current) wing.current.position.y = THREE.MathUtils.damp(wing.current.position.y, spoilerUp ? 1.03 : 0.78, 7, delta);
@@ -177,7 +172,7 @@ export default function AudiR8Model({
   return (
     <group ref={root}>
       {/* Low, wide Type 42 body with a long front deck and compact rear */}
-      <mesh geometry={bodyGeometry} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow material={shader} />
+      <mesh geometry={bodyGeometry} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow material={bodyMaterial} />
 
       {/* Dark glass canopy and rear mid-engine window */}
       <mesh geometry={canopyGeometry} rotation={[0, Math.PI / 2, 0]}>
@@ -213,7 +208,7 @@ export default function AudiR8Model({
           <group ref={side < 0 ? leftDoor : rightDoor} position={[side * 0.89, 0.61, 0.12]}>
             <mesh castShadow onPointerDown={(event) => click(event, 'doors')}>
               <boxGeometry args={[0.055, 0.31, 0.98]} />
-              <primitive object={shader} attach="material" />
+              <primitive object={bodyMaterial} attach="material" />
             </mesh>
             <mesh position={[side * 0.035, 0.12, -0.18]}>
               <boxGeometry args={[0.018, 0.025, 0.17]} />
@@ -277,7 +272,7 @@ export default function AudiR8Model({
             rotation={[0, (index % 2 === 0 ? 1 : -1) * Math.PI / 2, 0]}
           >
             <torusGeometry args={[0.405, 0.035, 10, 48, Math.PI]} />
-            <primitive object={shader} attach="material" />
+            <primitive object={bodyMaterial} attach="material" />
           </mesh>
           <Wheel
             position={position}

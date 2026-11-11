@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
+import * as THREE from 'three';
 import AudiR8Model from './AudiR8Model';
 import SceneLighting from './SceneLighting';
 import CameraController from './CameraController';
@@ -36,6 +37,10 @@ export default function ConfiguratorScene({
         alpha: false,
       }}
       camera={{ position: [4.8, 2.2, 5.2], fov: 42 }}
+      onCreated={({ gl, scene }) => {
+        gl.setClearColor('#e8edf2', 1);
+        scene.background = new THREE.Color('#e8edf2');
+      }}
       style={{ touchAction: 'none' }}
       performance={{ min: 0.55 }}
     >
