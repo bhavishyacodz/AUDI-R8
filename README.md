@@ -10,6 +10,17 @@ npm run build
 npm run preview
 ```
 
+## Cloudflare Workers deployment
+This repository is configured for Cloudflare Workers Static Assets through `wrangler.jsonc`.
+
+In Cloudflare Workers Builds, connect the repository and select the branch you intend to preview (currently `feat/audi-r8-configurator-foundation`). Use:
+- Root directory: `/`
+- Build command: `npm run build`
+- Deploy command: `npx wrangler deploy`
+- Build variables: none required for the current frontend
+
+The Wrangler config publishes the Vite `dist/` output and enables SPA fallback routing. Keep the feature branch selected until its preview has been tested; do not merge to `main solely to trigger a deployment.
+
 ## Features
 - Interactive 3D vehicle scene with orbit, zoom, camera presets and optional pointer parallax.
 - Six paint finishes, four wheel finishes and three studio lighting environments.
