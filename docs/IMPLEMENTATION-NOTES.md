@@ -17,15 +17,17 @@ This repository contains a modular React, Vite, React Three Fiber and Three.js c
 - Camera transitions animate the OrbitControls target as well as camera position.
 - Shader normals and view vectors use world-space coordinates consistently.
 - Audio is started only after user interaction and uses conservative synthesized levels.
-- The supplied tilt toggle is retained as a placeholder; pointer/device parallax is not wired yet.
+- The tilt toggle drives subtle pointer-based model parallax; it does not request device-motion permissions.
+- Engine control now separates ignition, rev and stop actions so a rev click cannot accidentally toggle the engine off.
+- Camera position, field-of-view and OrbitControls-target tweens are all cancelled during view changes/unmount.
 
 ## Known limitations / next QA
 1. Replace placeholder geometry with a properly licensed, optimized R8 GLB/GLTF asset.
 2. Verify shader compilation and appearance on desktop and mobile WebGL.
-3. Implement real pointer/device parallax or remove its placeholder toggle.
+3. Tune pointer parallax sensitivity and verify pointer/touch behavior across devices.
 4. Test touch gestures, keyboard access, reduced motion, modal focus management and small-screen layouts.
 5. Verify technical specifications and paint codes for the selected model year and market.
-6. Add automated lint/unit/browser tests and a preview deployment pipeline when desired.
+6. Add automated lint/unit/browser tests and a preview deployment pipeline; no Vercel project is currently connected for this repository.
 
 ## Privacy
 No analytics, accounts, database, payment collection, remote API or persistent user data is included.
